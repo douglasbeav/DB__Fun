@@ -50,4 +50,35 @@ public class DB_Statements {
         executeQuery(query);
     }
 
+    public static void deleteEmployee(String tbl, String employee) {
+        query = "delete from " + tbl + " where name = '" + employee + "';";
+
+        executeQuery(query);
+    }
+
+    public static void  showData(String tbl) {
+        query = "select * from " + tbl + ";";
+
+        int empID;
+        String name;
+        String address;
+
+        try {
+            stmt = connect.createStatement();
+            rs = stmt.executeQuery(query);
+            System.out.printf(TextColor.ANSI_GREEN + " %n%-9s| %-20s| %-20s%n", "empID", "name", "address");
+            System.out.println("---------|---------------------|-------------------");
+            while (rs.next()) {
+                empID = rs.getInt(1);
+                name = rs.getString("name");
+                address = rs.getString("address");
+                System.out.printf(TextColor.ANSI_RESET + "%-9s| %-20s| %-20s%n", empID, name, address);
+                System.out.println("---------|---------------------|-------------------");
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+            System.out.println(TextColor.ANSI_RED + "\n-- Query " + query + " did not execute--");
+        }
+    }
+
 }
