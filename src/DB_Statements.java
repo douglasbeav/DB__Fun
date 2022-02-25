@@ -81,4 +81,55 @@ public class DB_Statements {
         }
     }
 
+    public static void showDataByName(String tbl, String byName) {
+        query = "select * from " + tbl +
+                " where name like '" +
+                byName + "%';";
+
+        int empID;
+        String name;
+        String address;
+
+        try {
+            stmt = connect.createStatement();
+            rs = stmt.executeQuery(query);
+            System.out.printf(TextColor.ANSI_GREEN + " %n%-9s| %-20s| %-20s%n", "empID", "name", "address");
+            System.out.println("---------|---------------------|-------------------");
+            while (rs.next()) {
+                empID = rs.getInt(1);
+                name = rs.getString("name");
+                address = rs.getString("address");
+                System.out.printf(TextColor.ANSI_RESET + "%-9s| %-20s| %-20s%n", empID, name, address);
+                System.out.println("---------|---------------------|-------------------");
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+            System.out.println(TextColor.ANSI_RED + "\n-- Query " + query + " did not execute--");
+        }
+    }
+
+    public static boolean checkLogin(String name, String password) {
+        boolean check = false;
+        query = "select * from users " +
+                "where usrName = '" + name + "' and password = '" + password + "';";
+
+        try {
+            stmt = connect.createStatement();
+            rs = stmt.executeQuery(query);
+
+            while(rs.next()) {
+                check = true;
+                System.out.println("YOOOOHOOOO!!!!");
+            }
+
+            if(check == false) {
+                System.out.println("BOOHOOO!!!");
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+            return check;
+        }
+        return check;
+    }
+
 }
